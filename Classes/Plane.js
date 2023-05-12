@@ -101,22 +101,47 @@ class Plane {
                 // targetDir.normalize();
                 this.velocity = targetDir.mult(p5.Vector.mag(this.velocity));
                 this.target = null;
+                return;
             } else {
                 // Plane hasn't reached the target yet, adjust heading as before
                 let targetDir = p5.Vector.sub(this.target, this.pos);
                 let currentDir = this.velocity.copy();
                 let angle = currentDir.angleBetween(targetDir);
-    
+
                 let maxTurnAngle = this.turnRate * deltaTime;
                 if (angle > maxTurnAngle) angle = maxTurnAngle;
                 if (angle < -maxTurnAngle) angle = -maxTurnAngle;
-    
+
                 currentDir.rotate(angle);
-                this.velocity = currentDir.copy().add(this.velocity/2);
+                this.velocity = currentDir.copy().add(this.velocity / 2);
             }
+
+            // Draw the target marker
+            let radius = 100
+            push();
+            strokeWeight(1)
+            stroke(255, 255, 0);
+            noFill();
+            push ()
+            translate(this.target.x, this.target.y)
+            beginShape()
+            for(let i = 0; i > 359; i+= 360 / 6) {
+                let x = radius * cos(i);
+                let y = radius * sin(i);
+                vertex(x,y);
+            }
+            endShape(CLOSE)
+            pop ()
+            
+            rect(this.target.x, this.target.y, 5)
+            noStroke()
+            fill(255,255,0)
+            textSize(10)
+            text(this.callSign + " WP1", this.target.x,this.target.y-10)
+            pop();
         }
     }
-    
+
 
     generateCallsign() {
         const characters = 'abcdefghijklmnopqrstuvwxyz';
@@ -139,13 +164,17 @@ class Plane {
         if (this.trail.length > 2500) {
             // this.trail.shift();
         }
-        stroke(1,1,1,50);
+        stroke(1, 1, 1, 50);
         noFill();
         beginShape();
         for (let i = 0; i < this.trail.length; i++) {
             vertex(this.trail[i].x, this.trail[i].y);
         }
         endShape();
+    }
+
+    clearTrail() {
+        this.trail.splice(0,this.trail.length)
     }
 
     checkAlert() {
@@ -161,7 +190,10 @@ class Plane {
 
     checkLimits() {
         this.pos.x = ((this.pos.x % this.afWidth) + this.afWidth) % this.afWidth;
+        if (this.pos.x == 0 || this.pos.x == width) 
+        
         this.pos.y = ((this.pos.y % this.afHeight) + this.afHeight) % this.afHeight;
+        if (this.pos.y == 0 || this.pos.y == height) this.clearTrail()
     }
 
 

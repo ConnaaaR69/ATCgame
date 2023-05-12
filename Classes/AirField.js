@@ -44,30 +44,20 @@ class AirField {
         const radius = width / 2
         this.planes.forEach(plane => {
             
-            if (!this.inCircle(radius, radius, radius - (radius * 0.05), plane, plane)) {
+            if (!AirField.inCircle(radius, radius, radius - (radius * 0.05), plane, plane)) {
+            
+                plane.clearTrail()
                 return;
             }
-            plane.showLabels(this.planes.indexOf(plane));
             plane.render();
+            plane.showLabels(this.planes.indexOf(plane));
+            
+           
         });
         this.checkPlanes();
-
     }
 
-    /**
-    * Checks if the given vector object is within a defined circle.
-    * @param {Number} cx x coordinate for the circle
-    * @param {Number} cy y coordinate for the circle
-    * @param {Number} rad Radius of the circle
-    * @param {Object} object Vector object to check
-    * @returns
-    */
-    inCircle(cx, cy, rad, object) {
-        let sqDist = Math.pow((object.pos.x - cx), 2) / Math.pow(rad, 2) + Math.pow((object.pos.y - cy), 2) / Math.pow(rad, 2);
-
-        if (sqDist > 1) return false;
-        return true;
-    }
+   
 
     checkPlanes() {
         for (let i = 0; i < this.planes.length; i++) {
@@ -84,5 +74,20 @@ class AirField {
                 }
             }
         }
+    }
+
+     /**
+    * Checks if the given vector object is within a defined circle.
+    * @param {Number} cx x coordinate for the circle
+    * @param {Number} cy y coordinate for the circle
+    * @param {Number} rad Radius of the circle
+    * @param {Object} object Vector object to check
+    * @returns
+    */
+     static inCircle(cx, cy, rad, object) {
+        let sqDist = Math.pow((object.pos.x - cx), 2) / Math.pow(rad, 2) + Math.pow((object.pos.y - cy), 2) / Math.pow(rad, 2);
+
+        if (sqDist > 1) return false;
+        return true;
     }
 }
