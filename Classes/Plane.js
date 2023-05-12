@@ -9,7 +9,11 @@ class Plane {
         this.afWidth = afWidth;
         this.afHeight = afHeight;
         this.callSign = this.generateCallsign();
-        this.trail = []
+        this.trail = [];
+
+        if (this.constructor == Plane) {
+            throw new Error(" Object of Abstract Class cannot be created");
+        }
     }
 
     generateCallsign() {
@@ -32,14 +36,13 @@ class Plane {
         strokeWeight(1);
         push();
 
-        if(this.alert == true)
-        {
-            noFill()
-            stroke(250,0,0)
-            ellipse(this.pos.x,this.pos.y,40)
-            stroke(0,255,0)
+        if (this.alert == true) {
+            noFill();
+            stroke(250, 0, 0);
+            ellipse(this.pos.x, this.pos.y, 40);
+            stroke(0, 255, 0);
         }
-        
+
         translate(this.pos.x, this.pos.y);
         rotate(this.rotation);
         scale(this.size);
@@ -54,8 +57,8 @@ class Plane {
         endShape();
         pop();
 
-        this.generateTrail()
-        this.alert = false;       
+        this.generateTrail();
+        this.alert = false;
     }
 
     faster() {
@@ -80,34 +83,41 @@ class Plane {
     }
 
     showLabels(str) {
+        let red = color(255, 0, 0);
+        let blue = color(0, 0, 255);
+
         fill(0, 255, 0);
         noStroke();
         textSize(14);
         text(str, this.pos.x + 5, this.pos.y - 10);
         textSize(10);
 
-        this.alert ? (fill(255, 0, 0)) : (fill(0, 0, 255));
+        this.alert ? (fill(red)) : (fill(blue));
         rect(this.pos.x + 16, this.pos.y + 20, 32, 10);
-        fill (0)
-        rect(this.pos.x +20, this.pos.y + 35, 40, 20);
+        fill(0);
+        rect(this.pos.x + 20, this.pos.y + 35, 40, 20);
         fill(255);
         text(this.callSign, this.pos.x, this.pos.y + 25);
-        // text("y: "+Math.round(this.pos.y), this.pos.x, this.pos.y + 35);
-        // text("x: "+Math.round(this.pos.x), this.pos.x, this.pos.y + 45);
-        text("FL "+this.altitude, this.pos.x, this.pos.y + 35);
-        text("IAS "+Math.round(p5.Vector.mag(this.velocity)*2200), this.pos.x, this.pos.y + 45);
+        text("FL " + this.altitude, this.pos.x, this.pos.y + 35);
+        text("IAS " + Math.round(p5.Vector.mag(this.velocity) * 2200), this.pos.x, this.pos.y + 45);
         noFill();
     }
 
-    generateTrail(){
-        let trailRect = rect(this.pos.x, this.pos.y, 10)
-        this.trail.push(trailRect);
-        fill(255)
-        // rect(this.pos.x, this.pos.y, 10)
-        if(this.trail.length > 50){
-            this.trail.pop()
+    generateTrail() {
+        let trailRect = rect(this.pos.x, this.pos.y, 10);
+        this.trail.push({ x: this.pos.x, y: this.pos.y });
+        fill(255);
+
+        if (this.trail.length > 2500) {
+            this.trail.shift();
         }
-        console.log(this.trail)
+        stroke(1)
+        noFill()
+        beginShape();
+        for (let i = 0; i <this.trail.length; i++) {
+            vertex(this.trail[i].x, this.trail[i].y);
+        }
+        endShape();
     }
 
     checkLimits() {
