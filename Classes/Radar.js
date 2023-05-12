@@ -6,7 +6,7 @@ class Radar {
         this.sweepAngle = 1;
         this.angle = -90;
 
-        //this essentially creates a new renderer that can display separately to the main renderer
+        //Creates a new renderer that can display separately to the main renderer
         this.radarBeam = createGraphics(width, height);
 
     }

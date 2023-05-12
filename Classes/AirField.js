@@ -49,8 +49,6 @@ class AirField {
             }
             plane.showLabels(this.planes.indexOf(plane));
             plane.render();
-            plane.step();
-            plane.checkLimits();
         });
         this.checkPlanes();
 
@@ -78,7 +76,6 @@ class AirField {
 
                 let v1 = this.planes[i].pos;
                 let v2 = this.planes[j].pos;
-                //    rect (v1.x,v1.y,25)
                 let res = p5.Vector.sub(v1, v2);
 
                 if (p5.Vector.mag(res) <= 40) {

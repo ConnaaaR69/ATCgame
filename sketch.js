@@ -20,9 +20,18 @@ function setup() {
 }
 
 function draw() {
+  
+  fill(255)
+  if(selectedAircraft) text(selectedAircraft,50)
+  
   background(0);
   radar.update();
   airfield.flyPlanes();
+}
+
+function mouseClicked() {
+  if(selectedAircraft != undefined) {airfield.planes[selectedAircraft].setTarget(createVector(mouseX,mouseY))}
+  
 }
 
 function keyPressed() {
