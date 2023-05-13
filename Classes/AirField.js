@@ -45,14 +45,11 @@ class AirField {
         this.planes.forEach(plane => {
             
             if (!AirField.inCircle(radius, radius, radius - (radius * 0.05), plane, plane)) {
-            
                 plane.clearTrail()
                 return;
             }
             plane.render();
-            plane.showLabels(this.planes.indexOf(plane));
-            
-           
+            plane.showLabels(this.planes.indexOf(plane));           
         });
         this.checkPlanes();
     }

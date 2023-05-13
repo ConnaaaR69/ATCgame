@@ -13,6 +13,7 @@ class Plane {
         this.target = null;
         this.turnRate = 0.05;
 
+        // this prevents a plane object from being instanciated
         if (this.constructor == Plane) {
             throw new Error(" Object of Abstract Class cannot be created");
         }
