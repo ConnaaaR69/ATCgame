@@ -7,17 +7,25 @@ class Helicopter extends Plane {
         this.rotation = this.velocity.heading() + 90;
     }
 
+    /**
+     * Renders the Helicopter sub-class.
+     */
     render() {
-
         this.alert = false;
         super.render();
     }
 
+    /**
+     * Makes the helicopter object stationary
+     */
     hover() {
-        this.oldVel = this.velocity;
+        this.oldVel = createVector(this.velocity.x,this.velocity.y);
         this.velocity -= this.velocity;
     }
 
+    /**
+     * Draws the helicopter shape
+     */
     draw() {
         if (this.alert == true) {
             noFill();
@@ -41,6 +49,10 @@ class Helicopter extends Plane {
         pop();
     }
 
+
+    /**
+     * Resumes the previous heading and velocity of the helicopter instance
+     */
     unHover() {
         console.log('unhovering' + this.oldVel);
         if (this.velocity.x == 0 && this.velocity.y == 0) {
@@ -48,6 +60,7 @@ class Helicopter extends Plane {
         }
     }
 
+    // Parent inherits
     checkLimits() {
         super.checkLimits();
     }

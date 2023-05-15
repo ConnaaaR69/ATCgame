@@ -28,23 +28,6 @@ class Plane {
         this.generateTrail();
     }
 
-    faster() {
-        this.velocity.mult(1.5);
-    }
-
-    slower() {
-        this.velocity.mult(0.5);
-    }
-
-    turnLeft() {
-        this.velocity.rotate(-15);
-        rotate(this.velocity.heading + 90);
-    }
-    turnRight() {
-        this.velocity.rotate(15);
-        rotate(this.velocity.heading + 90);
-    }
-
     step() {
         this.pos.add(this.velocity);
     }
@@ -89,10 +72,18 @@ class Plane {
         noFill();
     }
 
+    /**
+     * @param {Vector} target Sets provided Vector coordinates for the turn heading method
+     */
     setTarget(target) {
         this.target = target;
     }
 
+
+    /**
+     * Turns the instance to the target from the setTarget method at a rate defined in the constructor
+     * @returns 
+     */
     turnHeading() {
         if (this.target != null) {
             let targetDist = p5.Vector.dist(this.target, this.pos);
@@ -118,27 +109,27 @@ class Plane {
             }
 
             // Draw the target marker
-            let radius = 100
+            let radius = 100;
             push();
-            strokeWeight(1)
+            strokeWeight(1);
             stroke(255, 255, 0);
             noFill();
-            push ()
-            translate(this.target.x, this.target.y)
-            beginShape()
-            for(let i = 0; i > 359; i+= 360 / 6) {
+            push();
+            translate(this.target.x, this.target.y);
+            beginShape();
+            for (let i = 0; i > 359; i += 360 / 6) {
                 let x = radius * cos(i);
                 let y = radius * sin(i);
-                vertex(x,y);
+                vertex(x, y);
             }
-            endShape(CLOSE)
-            pop ()
-            
-            rect(this.target.x, this.target.y, 5)
-            noStroke()
-            fill(255,255,0)
-            textSize(10)
-            text(this.callSign + " WP1", this.target.x,this.target.y-10)
+            endShape(CLOSE);
+            pop();
+
+            rect(this.target.x, this.target.y, 5);
+            noStroke();
+            fill(255, 255, 0);
+            textSize(10);
+            text(this.callSign + " WP1", this.target.x, this.target.y - 10);
             pop();
         }
     }
@@ -175,7 +166,7 @@ class Plane {
     }
 
     clearTrail() {
-        this.trail.splice(0,this.trail.length)
+        this.trail.splice(0, this.trail.length);
     }
 
     checkAlert() {
@@ -189,13 +180,32 @@ class Plane {
         this.alert = false;
     }
 
+    /**
+     * Checks that the instance is within the bounds of the canvas
+     */
     checkLimits() {
         this.pos.x = ((this.pos.x % this.afWidth) + this.afWidth) % this.afWidth;
-        if (this.pos.x == 0 || this.pos.x == width) 
-        
-        this.pos.y = ((this.pos.y % this.afHeight) + this.afHeight) % this.afHeight;
-        if (this.pos.y == 0 || this.pos.y == height) this.clearTrail()
+        if (this.pos.x == 0 || this.pos.x == width)
+
+            this.pos.y = ((this.pos.y % this.afHeight) + this.afHeight) % this.afHeight;
+        if (this.pos.y == 0 || this.pos.y == height) this.clearTrail();
     }
 
+    // Debug testing console methods
+    faster() {
+        this.velocity.mult(1.5);
+    }
 
+    slower() {
+        this.velocity.mult(0.5);
+    }
+
+    turnLeft() {
+        this.velocity.rotate(-15);
+        rotate(this.velocity.heading + 90);
+    }
+    turnRight() {
+        this.velocity.rotate(15);
+        rotate(this.velocity.heading + 90);
+    }
 }

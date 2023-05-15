@@ -55,7 +55,9 @@ class AirField {
     }
 
    
-
+    /**
+     * This method checks the distance between the planes in the AirField planes array
+     */
     checkPlanes() {
         for (let i = 0; i < this.planes.length; i++) {
             for (let j = (i + 1); j < this.planes.length; j++) {
